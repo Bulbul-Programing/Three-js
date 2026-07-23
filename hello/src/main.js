@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
+const geometry = new THREE.BufferGeometry();
 // create scene
 const scene = new THREE.Scene()
 
@@ -12,6 +13,20 @@ const cubeMaterial = new THREE.MeshBasicMaterial({ color: "red", wireframe: true
 // create mesh
 const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial)
 cubeMesh.rotation.y = 10
+
+// Create BufferGeometry
+
+const vertices = new Float32Array([
+  0, 0, 0,
+  1, 0, 0,
+  0, 1, 0
+])
+
+geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3))
+const material = new THREE.MeshBasicMaterial({color: "red",wireframe: true})
+const mesh  = new THREE.Mesh(geometry, material)
+
+
 
 // cubeMesh.position.y = -1
 // const cubeMesh2 = new THREE.Mesh(cubeGeometry, cubeMaterial)
@@ -28,7 +43,7 @@ cubeMesh.rotation.y = 10
 // group.add(cubeMesh3)
 
 // scene.add(group)
-scene.add(cubeMesh)
+scene.add(mesh)
 
 const axesHelper = new THREE.AxesHelper(4)
 cubeMesh.add(axesHelper)
