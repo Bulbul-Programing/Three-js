@@ -4,27 +4,39 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 const geometry = new THREE.BufferGeometry();
 // create scene
 const scene = new THREE.Scene()
-
+scene.background = new THREE.Color(0xffffff)
 
 //create geometry and material
 const cubeGeometry = new THREE.BoxGeometry(2, 2, 2)
-const cubeMaterial = new THREE.MeshBasicMaterial({ color: "red", wireframe: true })
+const planeGeometry = new THREE.PlaneGeometry(2, 2)
+const cubeMaterial = new THREE.MeshBasicMaterial({ color: "red" })
+
+cubeMaterial.side = THREE.DoubleSide
+cubeMaterial.fog = true
+const fog = new THREE.Fog(0xffffff, 1, 10)
+scene.fog = fog
 
 // create mesh
 const cubeMesh = new THREE.Mesh(cubeGeometry, cubeMaterial)
-cubeMesh.rotation.y = 10
+const cubeMesh2 = new THREE.Mesh(cubeGeometry, cubeMaterial)
+const cubeMesh3 = new THREE.Mesh(planeGeometry, cubeMaterial)
+
+cubeMesh2.position.x = 4
+cubeMesh3.position.x = -4
+
+// cubeMesh.rotation.y = 10
 
 // Create BufferGeometry
 
-const vertices = new Float32Array([
-  0, 0, 0,
-  1, 0, 0,
-  0, 1, 0
-])
+// const vertices = new Float32Array([
+//   0, 0, 0,
+//   1, 0, 0,
+//   0, 1, 0
+// ])
 
-geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3))
-const material = new THREE.MeshBasicMaterial({color: "red",wireframe: true})
-const mesh  = new THREE.Mesh(geometry, material)
+// geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3))
+// const material = new THREE.MeshBasicMaterial({ color: "red" })
+// const mesh = new THREE.Mesh(geometry, material)
 
 
 
@@ -43,7 +55,9 @@ const mesh  = new THREE.Mesh(geometry, material)
 // group.add(cubeMesh3)
 
 // scene.add(group)
-scene.add(mesh)
+scene.add(cubeMesh)
+scene.add(cubeMesh2)
+scene.add(cubeMesh3)
 
 const axesHelper = new THREE.AxesHelper(4)
 cubeMesh.add(axesHelper)
@@ -56,8 +70,8 @@ camera.position.z = 5
 const canvas = document.querySelector("canvas.webgl")
 
 // canvas render
-const renderer = new THREE.WebGLRenderer({ canvas }
-)
+const renderer = new THREE.WebGLRenderer({ canvas })
+
 renderer.setSize(window.innerWidth, window.innerHeight)
 const maxPixelRatio = Math.min(window.devicePixelRatio, 2)
 renderer.setPixelRatio(maxPixelRatio)
@@ -65,7 +79,7 @@ renderer.setPixelRatio(maxPixelRatio)
 // init orbit controls
 const controls = new OrbitControls(camera, canvas)
 // controls.autoRotate = true
-controls.autoRotateSpeed = 6
+// controls.autoRotateSpeed = 6
 controls.enableDamping = true
 controls.dampingFactor = 0.1
 // controls.target.set(
@@ -93,7 +107,7 @@ const renderLoop = () => {
   const delta = currentTime - previousTime
   previousTime = currentTime
 
-  cubeMesh.rotation.y += THREE.MathUtils.degToRad(1) * delta * 60
+  // cubeMesh.rotation.y += THREE.MathUtils.degToRad(1) * delta * 60
 
   controls.update()
   renderer.render(scene, camera)
